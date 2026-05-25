@@ -88,8 +88,8 @@
 - [ ] Load testing (k6)
 
 ### 6.9 DevOps
-- [ ] Docker containerization
-- [ ] CI/CD pipeline (GitHub Actions)
+- [x] Docker containerization
+- [x] CI/CD pipeline (GitHub Actions)
 - [ ] Staging/production environments
 - [ ] MongoDB Atlas production cluster
 - [ ] Monitoring (Sentry, LogRocket)
@@ -145,12 +145,9 @@ Enrollment ── progress tracking (videos, pdfs, quizzes, exams)
 
 | Phase | Duration | Status |
 |-------|----------|--------|
-| Phase 1-5 | 4-6 weeks | ✅ Done |
-| Phase 6.1-6.3 | 2-3 weeks | Planned |
-| Phase 6.4-6.5 | 2-3 weeks | Planned |
-| Phase 6.6-6.9 | 2-4 weeks | Planned |
-
-**Total estimated to production-ready: 10-16 weeks**
+| Phase 1-5 | 4-6 weeks | Done |
+| Phase 6 (core) | 2-3 weeks | Done |
+| Phase 6 (polish) | 2-4 weeks | Planned |
 
 ---
 

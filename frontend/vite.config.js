@@ -14,18 +14,13 @@ export default defineConfig(({ mode }) => {
           target: proxyTarget,
           changeOrigin: true,
           configure: (proxy) => {
-            proxy.on('error', (err, _req, res) => {
-              console.log(
-                '\n[vite] ⚠️  Backend not reachable at',
-                proxyTarget,
-                '\n       Start it with: cd backend && npm run dev\n'
-              );
+            proxy.on('error', (_err, _req, res) => {
               if (res && !res.headersSent) {
                 res.writeHead(503, { 'Content-Type': 'application/json' });
                 res.end(
                   JSON.stringify({
                     success: false,
-                    message: `Backend unavailable. Start the API server: cd backend && npm run dev`,
+                    message: 'Backend unavailable. Start the API server: cd backend && npm run dev',
                   })
                 );
               }

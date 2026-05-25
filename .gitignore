@@ -22,12 +22,51 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# OS / editor
+# OS files
 .DS_Store
 Thumbs.db
 desktop.ini
+ehthumbs.db
+
+# IDE / Editor
 .vscode/
 .idea/
+*.iml
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# Cursor
+.cursor/
+.cursorrules
+.cursorignore
+.cursorindexingignore
+
+# AI coding assistants
+.aider*
+.continue/
+.continuerules
+.windsurf/
+.windsurfrules
+.claude/
+.clinerules
+.trae/
+.codeium/
+.copilot/
+.fleet/
+.zed/
+AGENTS.md
+CLAUDE.md
+**/AGENTS.md
+
+# Local history / scratch
+.history/
+*.tmp
+*.temp
+*.bak
 *.swp
 *.swo
 *~
@@ -41,14 +80,18 @@ coverage/
 .parcel-cache/
 .vite/
 .eslintcache
+.turbo/
 
 # Uploads (local dev)
 backend/uploads/
 uploads/
 
-# Docker
+# Docker local overrides
 *.env.docker
+docker-compose.override.yml
 
-# Misc
+# Secrets / keys
 *.pem
 *.key
+*.p12
+*.pfx

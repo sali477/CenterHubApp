@@ -1,139 +1,131 @@
 # CentreHub Morocco
 
-A modern full-stack educational platform connecting students with educational centers, teachers, and courses across Morocco.
+A full-stack educational platform connecting students with centers, teachers, and courses across Morocco.
+
+## Features
+
+- Multi-role authentication (Student, Teacher, Center Owner, Admin)
+- Center discovery with filters, maps, and reviews
+- Course enrollment, progress tracking, quizzes, and exams
+- Real-time messaging and live classes (WebRTC + Socket.io)
+- Center owner dashboard (teachers, courses, revenue, analytics)
+- Stripe and CMI payment integration
+- Optional AI features (search, assistant, quiz generation)
 
 ## Tech Stack
 
-### Frontend
-- React.js (JSX) + Vite
-- React Router v7
-- Redux Toolkit (state management)
-- Tailwind CSS
-- Framer Motion (animations)
-- Axios (API requests)
-- Socket.io Client (real-time)
-- WebRTC (live classes)
-- Google OAuth
-
-### Backend
-- Node.js + Express.js
-- MongoDB + Mongoose ODM
-- JWT + Google Authentication
-- Cloudinary (media storage)
-- Socket.io (real-time messaging & WebRTC signaling)
-- OpenAI API (AI features)
-- Nodemailer (password reset)
+| Layer | Technologies |
+|-------|--------------|
+| Frontend | React, Vite, Redux Toolkit, Tailwind CSS, Framer Motion |
+| Backend | Node.js, Express, MongoDB, Mongoose, Socket.io |
+| Auth | JWT, Google OAuth |
+| Media | Cloudinary |
+| Payments | Stripe, CMI |
+| DevOps | Docker Compose, GitHub Actions |
 
 ## Project Structure
 
 ```
 CenterHubApp/
-├── backend/
-│   ├── server.js
-│   ├── .env.example
-│   └── src/
-│       ├── config/          # DB, Cloudinary config
-│       ├── controllers/     # MVC Controllers
-│       ├── middleware/      # Auth, roles, upload, errors
-│       ├── models/          # Mongoose schemas
-│       ├── routes/          # REST API routes
-│       ├── socket/          # Socket.io handlers
-│       └── utils/           # Helpers, email, tokens
-├── frontend/
-│   ├── index.html
-│   ├── .env.example
-│   └── src/
-│       ├── api/             # Axios API layer
-│       ├── components/      # Reusable UI components
-│       ├── pages/           # Route pages
-│       ├── store/           # Redux slices
-│       ├── routes/          # Protected routes
-│       └── utils/           # Helpers, socket
-└── ROADMAP.md
+├── backend/          # Express API + MongoDB
+├── frontend/         # React SPA
+├── docker-compose.yml
+├── .github/workflows # CI pipeline
+└── ROADMAP.md        # Feature roadmap
 ```
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - MongoDB (local or Atlas)
-- Cloudinary account
-- Google Cloud Console (OAuth + Maps)
-- OpenAI API key
+- Optional: Cloudinary, Google OAuth/Maps, OpenAI, Stripe keys
 
-### Backend Setup
+### Quick Start (recommended)
 
 ```bash
-cd backend
-cp .env.example .env
-# Edit .env with your credentials
+# Clone the repository
+git clone https://github.com/sali477/CenterHubApp.git
+cd CenterHubApp
+
+# Install root, backend, and frontend dependencies
 npm install
+npm install --prefix backend
+npm install --prefix frontend
+
+# Configure environment files
+cp backend/.env.example backend/.env    # Linux/macOS
+copy backend\.env.example backend\.env   # Windows
+
+cp frontend/.env.example frontend/.env
+copy frontend\.env.example frontend\.env
+
+# Start backend + frontend together
 npm run dev
 ```
 
-### Frontend Setup
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:5000/api/health
+
+### Run Services Separately
 
 ```bash
-cd frontend
-cp .env.example .env
-# Edit .env with your credentials
-npm install
-npm run dev
+# Terminal 1 — API
+cd backend && npm run dev
+
+# Terminal 2 — Web app
+cd frontend && npm run dev
 ```
 
 ### Environment Variables
 
-See `backend/.env.example` and `frontend/.env.example` for all required variables.
+See `backend/.env.example` and `frontend/.env.example` for all configuration options.  
+Only `MONGODB_URI` and `JWT_SECRET` are required for basic local development.
 
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/auth/register | Register user |
-| POST | /api/auth/login | Login |
-| POST | /api/auth/google | Google OAuth |
-| POST | /api/auth/forgot-password | Request password reset |
-| GET | /api/centers | List centers (with filters) |
-| GET | /api/centers/:id | Center profile |
-| POST | /api/centers | Create center |
-| GET | /api/courses | List courses |
-| POST | /api/enrollments | Enroll in course |
-| POST | /api/ai/smart-search | AI-powered search |
-| POST | /api/ai/assistant | AI course assistant |
-| POST | /api/ai/generate-quiz | Auto-generate quiz |
-| GET | /api/admin/analytics | Admin analytics |
-
-## User Roles
-
-1. **Student** - Search, enroll, track progress
-2. **Teacher** - Create courses, live sessions, join centers
-3. **Center Owner** - Manage center, teachers, revenue
-4. **Admin** - Verify accounts, manage reports, analytics
-
-### Docker Deployment
+## Docker
 
 ```bash
-# Copy and configure env
 cp backend/.env.example backend/.env
-
-# Start all services
 docker compose up --build
 ```
 
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
-- MongoDB: localhost:27017
 
-## Payment Setup
+## API Overview
 
-1. **Stripe**: Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to backend `.env`
-2. **CMI**: Add `CMI_MERCHANT_ID`, `CMI_SECRET_KEY`, `CMI_GATEWAY_URL` for production
-3. Dev mode uses `/payment/cmi-simulate` for CMI testing
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register user |
+| POST | `/api/auth/login` | Login |
+| POST | `/api/auth/google` | Google OAuth |
+| GET | `/api/centers` | List centers |
+| GET | `/api/courses` | List courses |
+| POST | `/api/enrollments` | Enroll in a course |
+| POST | `/api/ai/smart-search` | AI-powered search |
+| GET | `/api/admin/analytics` | Admin analytics |
 
-## Google Maps
+## User Roles
 
-Add `VITE_GOOGLE_MAPS_API_KEY` to frontend `.env` — enable Maps JavaScript API in Google Cloud Console.
+| Role | Capabilities |
+|------|--------------|
+| Student | Search, enroll, track progress |
+| Teacher | Create courses, live sessions, join centers |
+| Center Owner | Manage center, teachers, courses, revenue |
+| Admin | Verify accounts, reports, platform analytics |
+
+## Creating an Admin User
+
+After registering, update the role in MongoDB:
+
+```javascript
+db.users.updateOne(
+  { email: "admin@centrehub.ma" },
+  { $set: { role: "admin", isVerified: true } }
+)
+```
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
