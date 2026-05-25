@@ -38,8 +38,6 @@ ehthumbs.db
 .project
 .classpath
 .settings/
-
-# Cursor
 .cursor/
 .cursorrules
 .cursorignore
