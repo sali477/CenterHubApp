@@ -13,6 +13,17 @@ jobs:
       run:
         working-directory: backend
 
+    env:
+      NODE_ENV: test
+      JWT_SECRET: ci_jwt_secret_for_tests_only
+      JWT_EXPIRE: 1d
+      MONGODB_URI: mongodb://127.0.0.1:27017/ci_test
+      OPENAI_API_KEY: ''
+      STRIPE_SECRET_KEY: ''
+      GOOGLE_CLIENT_ID: ''
+      GOOGLE_CLIENT_SECRET: ''
+      CLIENT_URL: http://localhost:5173
+
     steps:
       - uses: actions/checkout@v4
 
@@ -23,10 +34,10 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-audit --no-fund
 
-      - name: Syntax check
-        run: node --check server.js
+      - name: CI validation
+        run: npm run ci:check
 
   frontend:
     runs-on: ubuntu-latest
@@ -59,6 +70,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Prepare CI env files
+        run: |
+          cp backend/.env.example backend/.env
+          cp frontend/.env.example frontend/.env
 
       - name: Build Docker images
         run: docker compose build
