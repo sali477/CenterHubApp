@@ -1,0 +1,44 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: centrehub-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: centrehub_morocco
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: centrehub-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/centrehub_morocco
+      CLIENT_URL: http://localhost:3000
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5000/api
+        VITE_SOCKET_URL: http://localhost:5000
+    container_name: centrehub-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
